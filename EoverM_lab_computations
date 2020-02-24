@@ -1,0 +1,30 @@
+import csv
+
+with open("lab2.csv") as csvfile:
+    data = csv.reader(csvfile, delimiter=',')
+    accelVoltage = []
+    peg = []
+    radius = []
+    filCurrent = []
+    helmVolt = []
+    helmCurrent = []
+    for row in data:
+        accelVoltage.append(float(row[0]))
+        peg.append(float(row[1]))
+        radius.append(float(row[2]))
+        filCurrent.append(float(row[3]))
+        helmVolt.append(float(row[4]))
+        helmCurrent.append(float(row[5]))
+
+
+EMALL = []
+for x in range (0, len(accelVoltage)):
+    B = 0.0000809258618*(helmCurrent[x]/0.0325)
+    EMALL.append((2*accelVoltage[x])/((radius[x]**2)*(B**2)))
+
+average = 0
+for x in range (0, len(EMALL)):
+    average = average + EMALL[x]
+
+average = average / (len(EMALL))
+print(average)
