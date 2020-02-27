@@ -20,6 +20,7 @@ with open("lab2.csv") as csvfile:
 EMALL = []
 for x in range (0, len(accelVoltage)):
     B = 0.0000809258618*(helmCurrent[x]/0.333375)
+    B = B + 0.0000606868
     EMALL.append((2*accelVoltage[x])/((radius[x]**2)*(B**2)))
 
 average = 0
