@@ -1,0 +1,45 @@
+import csv
+import math
+
+with open("lab2.csv") as csvfile:
+    data = csv.reader(csvfile, delimiter=',')
+    accelVoltage = []
+    peg = []
+    radius = []
+    filCurrent = []
+    helmVolt = []
+    helmCurrent = []
+    for row in data:
+        accelVoltage.append(float(row[0]))
+        peg.append(float(row[1]))
+        radius.append(float(row[2]))
+        filCurrent.append(float(row[3]))
+        helmVolt.append(float(row[4]))
+        helmCurrent.append(float(row[5]))
+
+with open('results.csv', mode='w', newline="") as output:
+    writer = csv.writer(output, delimiter=',')
+    writer.writerow(["B", "B error", "E/M", "E/M error ", "E/M percent error"])
+
+for x in range (0, len(accelVoltage)):
+    B = 0.0000809258618*(helmCurrent[x]/0.333375)
+    B = B + 0.0000606868
+    errorI = 0.0031843366656181347
+    errorR = 0.0015875  #tool error - pm 1/16 in
+    Berror = math.sqrt(  (((B/helmCurrent[x])*errorI)**2) + (((B/0.333375)*errorR)**2) )
+    EM = ((2*accelVoltage[x])/((radius[x]**2)*(B**2)))
+
+    if(accelVoltage[x] > 50):
+      VACCerror = (accelVoltage[x]*(0.0008)) + 0.005
+    else:
+      VACCerror=(accelVoltage[x]*(0.0008)) + 0.05
+    radError = 0.001
+    EMerror =  math.sqrt(   ((  (EM/accelVoltage[x])*VACCerror ) **2) + ((2 * (EM/radius[x]) * radError)**2)  + ((2 * (EM/B) * Berror)**2) )
+    perc = (EMerror / EM) * 100
+
+    print(str(B) + ',  ' + str(Berror)+ ',  ' + str(EM) + ',  ' + str(EMerror) + ', ' + str(perc) + '%')
+
+
+    #print(f'{B:.7f}' + '&' + "$\pm$" + f'{Berror:.8f}'+ '&' + str(EM) + "x 10$^{11}$"+ '&' + "$\pm$" + str(EMerror) + "x 10$^{9}$"+ '&' + f'{perc:.1f}' + "$\%$" + "\\\\")
+    #print("")
+    
