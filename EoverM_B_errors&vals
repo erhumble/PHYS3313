@@ -17,9 +17,6 @@ with open("lab2.csv") as csvfile:
         helmVolt.append(float(row[4]))
         helmCurrent.append(float(row[5]))
 
-with open('results.csv', mode='w', newline="") as output:
-    writer = csv.writer(output, delimiter=',')
-    writer.writerow(["B", "B error", "E/M", "E/M error ", "E/M percent error"])
 
 for x in range (0, len(accelVoltage)):
     B = 0.0000809258618*(helmCurrent[x]/0.333375)
