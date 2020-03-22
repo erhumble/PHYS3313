@@ -1,0 +1,93 @@
+
+import math
+
+raw = open("datastuff.txt", "r")
+allLines = raw.readlines()
+raw.close()
+angles = []
+tOne = []
+tTwo = []
+tThree = []
+avs = []
+for x in allLines:
+  if (x[1] == ' '):
+    angles.append(x[0])
+  else:
+    newString = x[0] + x[1]
+    angles.append(newString)
+  newTONE = x[5] + x[6] + x[7] + x[8] + x[9] + x[10]
+  newTTWO = x[14] + x[15] + x[16] + x[17] + x[18] + x[19]
+  newTTHREE = x[23] + x[24] + x[25] + x[26] + x[27] + x[28]
+  newAV = (float(newTONE) + float(newTTWO) + float(newTTHREE))/3
+
+  tOne.append(float(newTONE))
+  tTwo.append(float(newTTWO))
+  tThree.append(float(newTTHREE))
+  avs.append(newAV)
+
+print("BEGIN ANGLE DATA")
+print("////////")
+print("")
+for i in range(0,len(angles)):
+  sigmaSum = 0
+  sigmaSum = sigmaSum + ((tOne[i] - avs[i])**2)
+  sigmaSum = sigmaSum + ((tTwo[i] - avs[i])**2)
+  sigmaSum = sigmaSum + ((tThree[i] - avs[i])**2)
+  w = math.sqrt((1/(3-1)) * float(sigmaSum))
+  wm = w/(math.sqrt(3))
+  toolError = 0.0125
+  if(wm < (toolError * (1/10))):
+    print("Use tool accuracy for error.")
+    print("Tool error: " + str(toolError))
+  else:
+    print("Use standard deviation of the mean for error.")
+    print("SD of the mean: " + str(wm))
+  
+  
+  print("Average: " + str(avs[i]))
+  print("")
+
+print("")
+print("BEGIN FREQUENCY DATA")
+print("////////")
+print("")
+
+raw = open("datastuffFREQ.txt", "r")
+allLines = raw.readlines()
+raw.close()
+freqs = []
+tOne = []
+tTwo = []
+tThree = []
+avs = []
+for x in allLines:
+    
+  newFREQ = x[0] + x[1] + x[2] + x[3] + x[4]
+  newTONE = x[8] + x[9] + x[10] + x[11] + x[12] 
+  newTTWO = x[16] + x[17] + x[18] + x[19] + x[20]
+  newTTHREE = x[24] + x[25] + x[26] + x[27] + x[28]
+  newAV = (float(newTONE) + float(newTTWO) + float(newTTHREE))/3
+  freqs.append(float(newFREQ))
+  tOne.append(float(newTONE))
+  tTwo.append(float(newTTWO))
+  tThree.append(float(newTTHREE))
+  avs.append(newAV)
+
+for i in range(0,len(freqs)):
+  sigmaSum = 0
+  sigmaSum = sigmaSum + ((tOne[i] - avs[i])**2)
+  sigmaSum = sigmaSum + ((tTwo[i] - avs[i])**2)
+  sigmaSum = sigmaSum + ((tThree[i] - avs[i])**2)
+  w = math.sqrt((1/(3-1)) * float(sigmaSum))
+  wm = w/(math.sqrt(3))
+  toolError = 0.125
+  if(wm < (toolError * (1/10))):
+    print("Use tool accuracy for error.")
+    print("Tool error: " + str(0.48 * 0.001 * toolError))
+  else:
+    print("Use standard deviation of the mean for error.")
+    print("SD of the mean: " + str(0.48 * 0.001 * wm))
+  
+  
+  print("Average: " + str(0.48 * 0.001 * avs[i]))
+  print("")
