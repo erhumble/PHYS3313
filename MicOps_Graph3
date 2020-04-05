@@ -1,0 +1,22 @@
+import csv
+import math
+
+with open("id.csv") as csvfile:
+    data = csv.reader(csvfile, delimiter=',')
+    angle = []
+    voltage = []
+    
+    for row in data:
+        angle.append(float(row[0]))
+        voltage.append(float(row[1]))
+
+angleError = 2.5
+
+for i in range(0,len(voltage)):
+  print(str(angle[i]) + " " + str(voltage[i]) + " " + str(angleError) + " " + str(  (float(abs(voltage[i])) * (0.05/100)) + 0.0005 ))
+print("\n \n \n")
+for i in range(0,len(voltage)):
+    print(str(angle[i]) + " " + str(abs(1.7079 * math.cos(float(angle[i]) * (6.28319/360)))) + " " + str(angleError) + " " + str(  (float(abs(voltage[i])) * (0.05/100)) + 0.0005 ))
+print("\n \n \n")
+for i in range(0,len(voltage)):
+    print(str(angle[i]) + " " + str(abs(1.7079 * ((math.cos(float(angle[i]) * (6.28319/360)))**2))) + " " + str(angleError) + " " + str(  (float(abs(voltage[i])) * (0.05/100)) + 0.0005 ))
