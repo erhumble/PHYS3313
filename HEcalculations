@@ -1,0 +1,54 @@
+import csv
+
+with open("resistor_channel.csv") as csvfile:
+    data = csv.reader(csvfile, delimiter=',')
+    timeCHTWO = []
+    voltageCHTWO = []
+    for row in data:
+        timeCHTWO.append(float(row[3]))
+        voltageCHTWO.append(float(row[4]))
+
+startTime = timeCHTWO[0]
+
+currentCHTWO = [len(voltageCHTWO)]
+
+for i in range(0, len(timeCHTWO)):
+  timeCHTWO[i] = timeCHTWO[i] + startTime
+for x in range(0, len(voltageCHTWO)):
+  currentCHTWO.append(voltageCHTWO[x]/100)
+
+with open("circuit_channel.csv") as csvfile:
+    data = csv.reader(csvfile, delimiter=',')
+    timeCHONE = []
+    voltageCHONE = []
+    for row in data:
+        timeCHONE.append(float(row[3]))
+        voltageCHONE.append(float(row[4]))
+
+voltageDIODE = []
+
+for i in range(0, len(voltageCHONE)):
+  voltageDIODE.append(voltageCHONE[i] - voltageCHTWO[i])
+
+if(timeCHONE[0] != startTime):
+  print("time mismatch.")
+else:
+  
+  fileOut = open("runOne.csv", "w")
+  for i in range(0, len(voltageCHONE)):
+    if((currentCHTWO[i] <=10 )and(voltageDIODE[i] <=10)and(voltageDIODE[i]>0)):
+      fileOut.write(str(voltageDIODE[i]))
+      fileOut.write(", ")
+      fileOut.write(str(currentCHTWO[i]))
+      fileOut.write('\n')
+  fileOut.close()
+
+  fileOutTwo = open("runOneLinear.csv", "w")
+  for i in range(0, len(voltageCHONE)):
+    if(voltageDIODE[i] > 1.21):
+      x = (1.43674e-07)*((10386.7)**voltageDIODE[i])
+      fileOutTwo.write(str(voltageDIODE[i]))
+      fileOutTwo.write(", ")
+      fileOutTwo.write(str(x))
+      fileOutTwo.write("\n")
+  fileOutTwo.close()
